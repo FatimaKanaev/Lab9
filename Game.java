@@ -45,10 +45,19 @@ public class Game
         
         // initialise room exits
         outside.setExits(null, theater, lab, pub);
-        theater.setExits(null, null, null, outside);
-        pub.setExits(null, outside, null, null);
-        lab.setExits(outside, office, null, null);
-        office.setExits(null, null, null, lab);
+        // Question 8
+        outside.setExit("east", theater);
+        outside.setExit("south", lab);
+        outside.setExit("west", pub);
+        
+        theater.setExit("west", outside);
+        
+        pub.setExit("east", outside);
+        
+        lab.setExit("north", outside);
+        lab.setExit("east", office);
+        
+        office.setExit("west", lab);
 
         currentRoom = outside;  // start game outside
     }
@@ -112,6 +121,18 @@ public class Game
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
         }
+        //Question 14
+        else if (commandWord.equals("look")) {
+            System.out.println("Looking around...");
+        }
+        // Question 15
+        else if (commandWord.equals("eat")) {
+            System.out.println("You have eaten now and you are ot hungry anymore");
+        }
+        // Question 16
+        else if (commandWord.equals("help")) {
+            System.out.println(parser.showAllCommands());
+        }
 
         return wantToQuit;
     }
@@ -130,6 +151,7 @@ public class Game
         System.out.println();
         System.out.println("Your command words are:");
         System.out.println("   go quit help");
+        System.out.println(parser.showAllCommands());
     }
 
     /** 
@@ -147,6 +169,8 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
+        // Question 6
+        
         Room nextRoom = currentRoom.getExit(direction);
         
         if (nextRoom == null) {
